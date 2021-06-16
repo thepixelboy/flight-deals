@@ -1,11 +1,14 @@
 from pprint import pprint
 import requests
+import os
+from dotenv import load_dotenv
 
-SHEETY_PRICES_ENDPOINT = YOUR SHEETY PRICES ENDPOINT URL
+load_dotenv()
+
+SHEETY_PRICES_ENDPOINT = f"https://api.sheety.co/{os.getenv('SHEETY')}/flightDeals/prices"
 
 
 class DataManager:
-
     def __init__(self):
         self.destination_data = {}
 
@@ -18,18 +21,10 @@ class DataManager:
         # pprint(data)
         return self.destination_data
 
-
     # 6. In the DataManager Class make a PUT request and use the row id  from sheet_data
     # to update the Google Sheet with the IATA codes. (Do this using code).
     def update_destination_codes(self):
         for city in self.destination_data:
-            new_data = {
-                "price": {
-                    "iataCode": city["iataCode"]
-                }
-            }
-            response = requests.put(
-                url=f"{SHEETY_PRICES_ENDPOINT}/{city['id']}",
-                json=new_data
-            )
+            new_data = {"price": {"iataCode": city["iataCode"]}}
+            response = requests.put(url=f"{SHEETY_PRICES_ENDPOINT}/{city['id']}", json=new_data)
             print(response.text)
