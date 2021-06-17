@@ -26,3 +26,10 @@ class DataManager:
                 url=f"{SHEETY_PRICES_ENDPOINT}/{city['id']}", json=new_data, headers=self.bearer_headers
             )
             print(response.text)
+
+    def get_customer_emails(self):
+        customers_endpoint = SHEETY_PRICES_ENDPOINT
+        response = requests.get(customers_endpoint)
+        data = response.json()
+        self.customer_data = data["users"]
+        return self.customer_data
